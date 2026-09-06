@@ -972,7 +972,7 @@ spent on features than on hyperparameters.
 
 ### 7.7 Watch the library versions
 
-`dba` has pandas 3.0 and scikit-learn 1.9, newer than most tutorials assume. Two
+Pandas 3.0 and scikit-learn 1.9, newer than most tutorials assume. Two
 differences you will meet: `matplotlib`'s `boxplot(labels=...)` is now
 `tick_labels=`, and string columns load as `str` dtype rather than `object`.
 
