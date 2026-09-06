@@ -506,7 +506,7 @@ scores across k = 2…10 run 0.250, 0.272, 0.272, 0.271, 0.284, 0.255, 0.278,
 0.299, 0.321 — all low (above ~0.5 would indicate strong separation) and
 **rising at the top end**.
 
-> **A trap for beginners.** Silhouette rising as k grows does *not* mean k=10 is
+> Silhouette rising as k grows does *not* mean k=10 is
 > best. More clusters mean smaller, tighter groups almost mechanically. Pick k by
 > maximising silhouette and you will keep raising k for no real gain.
 
