@@ -317,7 +317,7 @@ already configured correctly.
 ## 4 · Why I chose these three algorithms
 
 The heart of the project, and the section to read most carefully. Task 1 asks
-*why*, and "it's popular" is not an answer.
+*why*.
 
 ### 4.0 The finding that drives every choice
 
