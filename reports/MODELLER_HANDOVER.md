@@ -583,7 +583,7 @@ by rigid/articulated and axle count, then `AADT 2019 - Buses`,
 **Numeric — road conditions (3 columns).**
 `Speed (km/hr) - Except Buses`, `Speed (km/hr) - Buses Only`, `Link Length (m)`.
 
-**Numeric — VKM (20 columns) ⚠️** `VKM` = *Vehicle Kilometres*, one mirroring
+**Numeric — VKM (20 columns) ** `VKM` = *Vehicle Kilometres*, one mirroring
 each AADT column. **`VKM ≈ AADT × Link Length × 365`.** These are the leaked
 columns — see §7.1.
 
@@ -897,7 +897,7 @@ genuinely useful thing to tell the client.
 
 ## 7 · Pitfalls — the mistakes I actually made
 
-### 7.1 The VKM leakage trap ⚠️ most important
+### 7.1 The VKM leakage trap most important
 
 `VKM = AADT × Link Length × 365`, and LAEI computes the target *from* VKM.
 
@@ -1047,7 +1047,7 @@ won* — **why they differ**. The five mechanisms available to you:
 | Term | Meaning |
 |---|---|
 | **AADT** | Annual Average Daily Traffic — vehicles per day |
-| **VKM** | Vehicle Kilometres per year ≈ AADT × length × 365 ⚠️ leaked |
+| **VKM** | Vehicle Kilometres per year ≈ AADT × length × 365 leaked |
 | **NOx** | Nitrogen oxides — the main traffic-related pollutant |
 | **PM10 / PM2.5** | Particulate matter under 10 / 2.5 micrometres |
 | **LGV / HGV / PHV** | Light goods (van) / Heavy goods (lorry) / Private hire vehicle |
