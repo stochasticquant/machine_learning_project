@@ -1,0 +1,76 @@
+# LAEI 2019 — Predicting Atmospheric Emissions
+# Python 3.12.13  (developed and verified in conda env `dba`)
+#
+#   pip install -r requirements.txt
+#
+# Versions are pinned to what the results were actually produced with. The
+# project uses pandas 3.x and scikit-learn 1.9, which are newer than most
+# tutorials assume — see the note at the bottom before relaxing any pin.
+
+# --- core data handling -------------------------------------------------
+pandas==3.0.5
+numpy==2.5.2
+scipy==1.18.0
+
+# --- machine learning ---------------------------------------------------
+scikit-learn==1.9.0
+
+# --- reading the source workbooks ---------------------------------------
+# The LAEI files are .xlsx. openpyxl is required by src/convert_excel.py,
+# which streams them to CSV; nothing downstream needs it.
+openpyxl==3.1.5
+
+# --- downloading the dataset --------------------------------------------
+# Used only by notebooks/01_data_acquisition.ipynb.
+requests==2.34.2
+
+# --- figures ------------------------------------------------------------
+matplotlib==3.11.1
+seaborn==0.13.2
+
+# --- notebooks ----------------------------------------------------------
+jupyterlab==4.6.3
+notebook==7.6.2
+ipykernel==7.3.0
+nbformat==5.11.0
+nbconvert==7.17.1          # also used to execute notebooks headlessly
+
+# --- reporting ----------------------------------------------------------
+tabulate==0.10.0           # DataFrame.to_markdown() in notebook 06
+python-pptx==1.0.2         # presentation/build_deck.py
+
+
+# ------------------------------------------------------------------------
+# NOTES
+#
+# 1. Conda alternative. This project was developed in a conda environment.
+#    To recreate it that way instead:
+#
+#       conda create -n laei python=3.12 -y
+#       conda activate laei
+#       conda install -y pandas numpy scipy scikit-learn matplotlib seaborn \
+#                        openpyxl jupyterlab nbconvert requests
+#       pip install python-pptx tabulate
+#
+# 2. Why the pins matter. Two API differences bite if you drop to older
+#    versions of the libraries this was built against:
+#      - matplotlib >= 3.9 renamed boxplot(labels=) to boxplot(tick_labels=)
+#      - pandas 3.x loads string columns as `str` dtype, not `object`
+#    Neither changes any result, but code written for one will warn or fail
+#    on the other.
+#
+# 3. Reproducibility. Every split, model and clustering run in this project
+#    sets random_state=42. With these pinned versions the numbers in
+#    reports/Task3_Task4_Report.md reproduce exactly. Minor-version drift in
+#    scikit-learn can shift the last decimal place without being a bug.
+#
+# 4. Optional extras, deliberately not pinned here because nothing in the
+#    committed notebooks imports them:
+#      geopandas, shapely, pyproj, folium   # nicer maps than the scatter
+#                                           # plots used in notebooks 02/04
+#      xgboost, lightgbm                    # further gradient-boosting
+#                                           # benchmarks alongside
+#                                           # HistGradientBoosting
+#
+# 5. Not a dependency: `src/laei.py` is this project's own shared module.
+#    Import it with sys.path.append("../src"), not pip.

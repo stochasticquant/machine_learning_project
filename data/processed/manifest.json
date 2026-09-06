@@ -1,0 +1,141 @@
+{
+  "project": "LAEI 2019 \u2014 atmospheric emissions ML",
+  "source": {
+    "dataset": "London Atmospheric Emissions Inventory (LAEI) 2019",
+    "publisher": "Greater London Authority, Environment Team",
+    "datastore_id": "e758q",
+    "licence": "UK Open Government Licence v3.0",
+    "note": "Superseded by LAEI 2022 in August 2025; 2019 used as the brief specifies."
+  },
+  "base_year": 2019,
+  "excluded_years": [
+    2025,
+    2030
+  ],
+  "environment": {
+    "python": "3.12.13",
+    "pandas": "3.0.5",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0"
+  },
+  "tables": {
+    "table_A_links.csv": {
+      "algorithms": [
+        "LinearRegression",
+        "RandomForestRegressor"
+      ],
+      "unit": "one major road link (OS TOID)",
+      "rows": 79388,
+      "targets": {
+        "primary": "nox",
+        "alternatives": [
+          "pm10",
+          "pm25",
+          "co2",
+          "nox_per_m"
+        ],
+        "units": "tonnes/year"
+      },
+      "feature_sets": {
+        "full": 43,
+        "realistic": 23
+      },
+      "categorical": [
+        "LAEI Zone",
+        "Borough",
+        "Road Classification"
+      ],
+      "quality_flags": {
+        "no_traffic_data": 688,
+        "bus_speed_missing": 26979
+      },
+      "placeholder_handling": "'-' in AADT/VKM means ZERO VEHICLES (verified: sum of classes == stated total) and is zero-filled. '-' in the Speed columns means MISSING and is left NaN for median imputation, with bus_speed_missing as an indicator.",
+      "warning": "The 'full' set contains VKM, which LAEI uses to COMPUTE the target. Use it only as a leakage demonstration."
+    },
+    "table_B_grid_source_mix.csv": {
+      "algorithms": [
+        "KMeans"
+      ],
+      "unit": "one 1 km grid cell",
+      "rows": 3460,
+      "features": [
+        "share_Accidental Fires",
+        "share_Agriculture",
+        "share_Aviation",
+        "share_Biomass",
+        "share_Commercial Cooking",
+        "share_Construction",
+        "share_Forestry",
+        "share_Gas Leakage",
+        "share_Heat and Power Generation",
+        "share_Industrial Processes",
+        "share_Machinery",
+        "share_Rail",
+        "share_Resuspension",
+        "share_River",
+        "share_Road Transport",
+        "share_Waste"
+      ],
+      "matrix": "table_B_kmeans_matrix.npy (standardised, fit-ready)",
+      "note": "Easting/Northing are for validation and plotting only \u2014 do NOT include them as clustering features."
+    },
+    "table_C_grid_nonleaky.csv": {
+      "algorithms": [
+        "RandomForestClassifier",
+        "LinearRegression"
+      ],
+      "unit": "one 1 km grid cell",
+      "rows": 3460,
+      "features": [
+        "co2_Accidental Fires",
+        "co2_Agriculture",
+        "co2_Aviation",
+        "co2_Biomass",
+        "co2_Commercial Cooking",
+        "co2_Construction",
+        "co2_Forestry",
+        "co2_Gas Leakage",
+        "co2_Heat and Power Generation",
+        "co2_Industrial Processes",
+        "co2_Machinery",
+        "co2_Rail",
+        "co2_Resuspension",
+        "co2_River",
+        "co2_Road Transport",
+        "co2_Waste",
+        "Easting",
+        "Northing"
+      ],
+      "targets": {
+        "regression": "nox",
+        "classification": "nox_hotspot"
+      },
+      "hotspot_threshold_tonnes_yr": 27.5185,
+      "positive_rate": 0.1
+    },
+    "table_C_LEAKY_reference.csv": {
+      "purpose": "Leakage demonstration only \u2014 features sum to the target."
+    }
+  },
+  "modelling_protocol": {
+    "split": "train_test_split(test_size=0.2, random_state=42); stratify=y for classification",
+    "cross_validation": "KFold(5, shuffle=True, random_state=42); GroupKFold(groups=Borough) as a spatial sanity check",
+    "preprocessing": "laei.make_preprocessor(numeric, categorical) inside a Pipeline",
+    "regression_metrics": [
+      "R2",
+      "MAE",
+      "RMSE"
+    ],
+    "classification_metrics": [
+      "ROC-AUC",
+      "precision",
+      "recall",
+      "F1"
+    ],
+    "baselines": [
+      "DummyRegressor(strategy='median')",
+      "DummyClassifier(strategy='stratified')"
+    ],
+    "note": "Report MAE alongside RMSE. Targets are strongly right-skewed, so the two metrics can rank models differently \u2014 that difference is a finding."
+  }
+}
